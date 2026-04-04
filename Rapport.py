@@ -2,4 +2,4 @@ from datetime import datetime
 
 class rapport:
     numero =
-    temps=hgh
+    temps=
