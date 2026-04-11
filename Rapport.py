@@ -59,7 +59,9 @@ class rapport:
             nb_vl = [1 for enrg in self._enregistrements if enrg["heure_sortie"]]
         return duree/nb_vl
     with open(fichier_raport, 'w', encoding='utf-8') as f:
+                        f.write("#"*40\n)
                         f.write("RAPPORT JOURNALIER DU PARKING\n")
+                        f.write("#"*40\n)
                         f.write(f"Date: {datetime.now().strftime('%d/%m/%Y')}\n")
                         f.write(f"Nombre de véhicules: {nbr_vehicules}\n")
                         f.write(f"Durée moyenne de stationnement: {duree_moyenne:.2f} heures\n\n")
