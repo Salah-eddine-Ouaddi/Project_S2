@@ -35,7 +35,7 @@ class rapport:
            nb_vl = [1 for enrg in self._enregistrements if enrg["heure_sortie"]]
            return nb_vl
         else:
-            return "pas de donees"
+            return "pas des donees"
  
     def duree_moyenne(self):
         if self._enregistrements:
@@ -56,13 +56,12 @@ class rapport:
                   duree+=heures
                 else:
                     continue
-            nb_vl = [1 for enrg in self._enregistrements if enrg["heure_sortie"]]
+            nb_vl = self.nbr_vehicules()
         return duree/nb_vl
-    with open(fichier_raport, 'w', encoding='utf-8') as f:
-                        f.write("#"*40\n)
-                        f.write("RAPPORT JOURNALIER DU PARKING\n")
-                        f.write("#"*40\n)
-                        f.write(f"Date: {datetime.now().strftime('%d/%m/%Y')}\n")
-                        f.write(f"Nombre de véhicules: {nbr_vehicules}\n")
-                        f.write(f"Durée moyenne de stationnement: {duree_moyenne:.2f} heures\n\n")
+    def __str__(self):
+            with open(fichier_raport, 'w', encoding='utf-8') as f:
+                    f.write("RAPPORT JOURNALIER DU PARKING\n")
+                    f.write(f"Date: {datetime.now().strftime('%d/%m/%Y')}\n")
+                    f.write(f"Nombre de véhicules: {self.nbr_vehicules()}\n")
+                    f.write(f"Durée moyenne de stationnement: {self.duree_moyenne()} heures\n\n")
     
