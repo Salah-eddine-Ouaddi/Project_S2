@@ -6,7 +6,6 @@ class rapport:
     def __init__(self,fichier):
         self._fichier_donnees=fichier
         self._enregistrements = self.charger_donnees()
-
     def charger_donnees(self):
         enregistrements = []
         if os.path.exists(self._fichier_donnees):
