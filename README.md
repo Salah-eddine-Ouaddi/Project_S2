@@ -94,6 +94,8 @@ Chaque enregistrement suit ce format :
 ---
 
 ## Structure du projet
+
+```txt
 mon_projet/
 ├── main.py          ← point d'entrée
 ├── src/
@@ -107,7 +109,7 @@ mon_projet/
 ├── output/
 │   └── rapport.txt
 └── README.md
-
+```
 ---
 
 
