@@ -1,31 +1,53 @@
-import os
+
+
+import json
 from pathlib import Path
+from src.core.models import Ticket
 
-fichier="input.txt"
+class ParkingStorage:
+    """Gère la persistance des tickets dans un fichier JSON."""
 
-class storage:
-  def __init__(self,fichier):
-        self._fichier_donnees=fichier
-        self._enregistrements = self.charger_donnees()
-  def charger_donnees(self):
-        enregistrements = []
-        if os.path.exists(self._fichier_donnees):
-            try:
-                with open(self.fichier_donnees, 'r', encoding='utf-8') as f:
-                    for ligne in f:
-                        ligne = ligne.strip()
-                        if ligne:
-                            try:
-                                matricule, heure_entree, heure_sortie = ligne.split(',')
-                                enregistrements.append({
-                                    "matricule": matricule,
-                                    "heure_entree": heure_entree,
-                                    #si heure de sortie n est existe pas 
-                                    "heure_sortie": heure_sortie if heure_sortie != "None" else None 
-                                })
-                            except ValueError:
-                                continue
-            except Exception as e:
-                    print(f"Erreur du chargement: {e}")
-                    raise
-        return enregistrements
+    def __init__(self, chemin_fichier):
+        #un chemin robuste
+        self._chemin = Path(chemin_fichier)
+
+        self._chemin.parent.mkdir(parents=True, exist_ok=True)
+
+    
+    #  Chargement           #
+    def charger(self):
+        """Lit le fichier JSON et retourne une liste de Ticket.
+        Retourne une liste vide si le fichier est absent ou corrompu."""
+
+        # si le fichier n'existe pas → démarre à vide
+        if not self._chemin.exists():
+            return []
+
+        try:
+            with open(self._chemin, "r", encoding="utf-8") as f:
+                donnees = json.load(f)
+
+            # On reconstruit chaque Ticket depuis son dictionnaire
+            tickets = []
+            for d in donnees:
+                tickets.append(Ticket.from_dict(d))
+            return tickets
+
+        except json.JSONDecodeError:
+            # si le fichier est corrompu → message d'erreur
+            print("[ERREUR] Fichier JSON corrompu. Démarrage à vide.")
+            return []
+
+    
+    #  Sauvegarde   #
+    
+    def sauvegarder(self, tickets):
+        """Écrit la liste de Ticket dans le fichier JSON."""
+
+        # convertir chaque Ticket en dictionnaire
+        donnees = []
+        for ticket in tickets:
+            donnees.append(ticket.to_dict())
+
+        with open(self._chemin, "w", encoding="utf-8") as f:
+            json.dump(donnees, f, ensure_ascii=False, indent=4)
