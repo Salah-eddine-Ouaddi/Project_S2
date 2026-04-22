@@ -28,7 +28,7 @@ class Ticket:
         return self._heure_sortie
 
     
-    #  Setters avec gestion d'erreurs    #
+    #  Setters avec validation    #
     
     def set_heure_sortie(self, heure):
         if not Ticket._valider_heure(heure):
